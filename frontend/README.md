@@ -1,11 +1,11 @@
-# CareerCrawler 🕷️
+# JobOrbit 🕷️
 
 A sleek job aggregator frontend built with React + Vite.
 
 ## Project Structure
 
 ```
-careercrawler/
+JobOrbit/
 ├── index.html
 ├── package.json
 ├── vite.config.js
