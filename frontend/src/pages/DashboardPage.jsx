@@ -190,7 +190,7 @@ export default function DashboardPage({
           <div className={styles.topbarMeta}>
             <div>
               <p className={styles.kicker}>Live Search Dashboard</p>
-              <h1 className={styles.heading}>CareerCrawler Jobs</h1>
+              <h1 className={styles.heading}>JobOrbit Jobs</h1>
             </div>
             <div className={styles.statusChip}>
               <span className={styles.statusDot} />

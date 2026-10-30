@@ -10,7 +10,7 @@ export default function Navbar({ onGetStarted, onLogoClick, onNavigateSection })
     <nav className={styles.nav}>
       <button className={styles.logo} onClick={onLogoClick} type="button">
         <div className={styles.spiderIcon}>🕷️</div>
-        CareerCrawler <span className={styles.version}>/ v1.0</span>
+        JobOrbit <span className={styles.version}>/ v1.0</span>
       </button>
 
       <ul className={styles.links}>

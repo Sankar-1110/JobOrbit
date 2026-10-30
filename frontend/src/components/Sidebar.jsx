@@ -93,7 +93,7 @@ export default function Sidebar({ active = 'jobs', onSelect, onNavigateHome, sta
       <aside className={`${styles.sidebar} ${isMobileOpen ? styles.sidebarOpen : ''}`}>
         <button className={styles.logo} type="button" onClick={onNavigateHome}>
           <div className={styles.spiderIcon}>🕷️</div>
-          CareerCrawler
+          JobOrbit
         </button>
 
         <nav className={styles.navSection}>

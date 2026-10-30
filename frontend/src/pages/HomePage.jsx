@@ -144,7 +144,7 @@ export default function HomePage({ onNavigateDashboard }) {
         </h1>
 
         <p className={styles.sub}>
-          CareerCrawler spiders across 30+ company career pages and aggregates
+          JobOrbit spiders across 30+ company career pages and aggregates
           fresh listings in one searchable dashboard. No more tab-hopping.
         </p>
 
@@ -301,7 +301,7 @@ export default function HomePage({ onNavigateDashboard }) {
 
       {/* ── FOOTER ── */}
       <footer className={styles.footer} id="privacy">
-        <p>© 2026 CareerCrawler 🕷️ — Built with Puppeteer, Cheerio &amp; MongoDB</p>
+        <p>© 2026 JobOrbit 🕷️ — Built with Puppeteer, Cheerio &amp; MongoDB</p>
         <div className={styles.footerLinks}>
           <a href="https://github.com/CodeCrest404/Career-Crawler" target="_blank" rel="noreferrer">GitHub</a>
           <a href={`${appConfig.apiBaseUrl}/api/stats`} target="_blank" rel="noreferrer">API</a>
