@@ -1,64 +1,69 @@
-# CareerCrawler
+# JobOrbit 🚀
 
-CareerCrawler is a full-stack job aggregation platform that scrapes live job listings from multiple company career portals, stores them in MongoDB, and exposes a searchable dashboard through a React frontend.
+JobOrbit is a full-stack job aggregation platform that scrapes live job listings from multiple company career portals, stores them in MongoDB, and provides a searchable dashboard through a React frontend.
 
-The project currently supports:
+## Tech Stack
 
-- `Frontend`: React + Vite
-- `Backend`: Node.js + Express
-- `Database`: MongoDB Atlas
-- `Scraper platforms`: Greenhouse, Lever, Workday
-- `Deployment`: Vercel (frontend), Render (backend), MongoDB Atlas (database)
+- **Frontend:** React + Vite
+- **Backend:** Node.js + Express
+- **Database:** MongoDB Atlas
+- **Scraper Platforms:** Greenhouse, Lever, Workday
+- **Deployment:** Vercel (frontend), Render (backend), MongoDB Atlas (database)
 
 ## Live Deployment
 
-- Frontend: `https://career-crawler-6tga.vercel.app/`
-- Backend: `https://career-crawler-1.onrender.com/`
+- **Frontend:** https://job-orbit-nine.vercel.app/
+- **Backend:** https://joborbit-3hn1.onrender.com/
 
 ## Features
 
 - Search jobs by role, location, experience, and category
-- Background scraping on a cron schedule
-- Manual scrape trigger through the dashboard or API
-- MongoDB-backed search for fast UI responses
+- Automated background scraping on a scheduled cron job
+- Manually trigger scraping through the dashboard or API
+- MongoDB-backed job storage for faster search responses
 - Pagination for scalable job listing queries
-- Dashboard stats for active jobs, active companies, and scrape status
+- Dashboard statistics for active jobs, active companies, and scraping status
 - Support for multiple scraper platforms through a registry-based backend
 
 ## Architecture
 
 ```text
-User
-  |
-  v
-React Frontend (Vercel)
-  |
-  v
-Node.js + Express API (Render)
-  |
-  +--> Scraper Service
-  |      |
-  |      +--> Greenhouse
-  |      +--> Lever
-  |      +--> Workday
-  |
-  v
-MongoDB Atlas
+                         User
+                           |
+                           v
+                  React Frontend (Vercel)
+                           |
+                           v
+                 Node.js + Express API
+                        (Render)
+                           |
+                           v
+                    Scraper Service
+                           |
+              +------------+------------+
+              |            |            |
+              v            v            v
+          Greenhouse     Lever       Workday
+              |            |            |
+              +------------+------------+
+                           |
+                           v
+                     MongoDB Atlas
 ```
 
 ## Data Flow
 
-1. A scheduled job runs every 6 hours.
+1. A scheduled job runs every six hours.
 2. The backend loads active companies from MongoDB.
 3. Each company is processed by the scraper registered for its `scraper_type`.
-4. Jobs are normalized and upserted into the `jobs` collection.
+4. Scraped jobs are normalized and upserted into the `jobs` collection.
 5. The frontend queries `/api/jobs` and `/api/stats`.
-6. Users browse live results from the database instead of waiting on live scraping.
+6. Users browse stored job listings without waiting for live scraping on every request.
 
 ## Project Structure
 
 ```text
-Career-Crawler/
+JobOrbit/
 ├── backend/
 │   ├── config/
 │   ├── controllers/
@@ -89,7 +94,8 @@ Career-Crawler/
 
 ### Tech Stack
 
-- Express
+- Node.js
+- Express.js
 - Mongoose
 - Axios
 - Cheerio
@@ -119,15 +125,17 @@ Career-Crawler/
 
 ### Core Backend Files
 
-- `backend/server.js`: app bootstrap and server startup
-- `backend/config/db.js`: MongoDB connection
-- `backend/controllers/jobController.js`: API logic
-- `backend/routes/jobRoutes.js`: API routes
-- `backend/services/scrapeService.js`: scraper orchestration and upsert flow
-- `backend/scheduler/cronJobs.js`: cron scheduling
-- `backend/models/Job.js`: job schema
-- `backend/models/Company.js`: company schema
-- `backend/data/companies.js`: seed company list
+| File | Responsibility |
+|---|---|
+| `backend/server.js` | Application initialization and server startup |
+| `backend/config/db.js` | MongoDB connection |
+| `backend/controllers/jobController.js` | Job API logic |
+| `backend/routes/jobRoutes.js` | API route definitions |
+| `backend/services/scrapeService.js` | Scraper orchestration and database upserts |
+| `backend/scheduler/cronJobs.js` | Scheduled scraping |
+| `backend/models/Job.js` | Job schema |
+| `backend/models/Company.js` | Company schema |
+| `backend/data/companies.js` | Initial company list |
 
 ### Job Schema
 
@@ -170,30 +178,32 @@ Career-Crawler/
 
 ### Main Screens
 
-- `HomePage`: project landing page and search entry point
-- `DashboardPage`: live job dashboard with filters, stats, pagination, and scraper trigger
+- **HomePage:** Landing page and job search entry point
+- **DashboardPage:** Job dashboard with filters, statistics, pagination, and a manual scraping trigger
 
 ### Core Frontend Files
 
-- `frontend/src/App.jsx`: app-level navigation between home and dashboard
-- `frontend/src/pages/HomePage.jsx`: landing page
-- `frontend/src/pages/DashboardPage.jsx`: jobs dashboard
-- `frontend/src/components/Navbar.jsx`: homepage navigation
-- `frontend/src/components/Sidebar.jsx`: dashboard navigation
-- `frontend/src/components/JobCard.jsx`: job display card
-- `frontend/src/services/api.js`: backend API calls
-- `frontend/src/services/jobData.js`: normalization layer between API and UI
+| File | Responsibility |
+|---|---|
+| `frontend/src/App.jsx` | Application-level navigation |
+| `frontend/src/pages/HomePage.jsx` | Landing page |
+| `frontend/src/pages/DashboardPage.jsx` | Job dashboard |
+| `frontend/src/components/Navbar.jsx` | Homepage navigation |
+| `frontend/src/components/Sidebar.jsx` | Dashboard navigation |
+| `frontend/src/components/JobCard.jsx` | Job display card |
+| `frontend/src/services/api.js` | Backend API calls |
+| `frontend/src/services/jobData.js` | API data normalization for the UI |
 
 ## API Documentation
 
-Base URL:
+### Base URLs
 
-- Local: `http://localhost:5000`
-- Production: `https://career-crawler-1.onrender.com`
+- **Local:** `http://localhost:5000`
+- **Production:** `https://career-crawler-1.onrender.com`
 
 ### `GET /api/health`
 
-Health check endpoint.
+Checks whether the backend is running.
 
 Example response:
 
@@ -207,9 +217,9 @@ Example response:
 
 ### `GET /api/jobs`
 
-Fetch paginated, filtered jobs.
+Fetches paginated job listings with optional filters.
 
-Query parameters:
+**Query parameters:**
 
 - `role`
 - `location`
@@ -218,7 +228,7 @@ Query parameters:
 - `page`
 - `limit`
 
-Example:
+Example request:
 
 ```text
 /api/jobs?role=backend&location=India&experience=1-3%20years&page=1&limit=20
@@ -238,7 +248,7 @@ Example response:
 
 ### `GET /api/jobs/all`
 
-Returns all active jobs without pagination.
+Returns all active job listings without pagination.
 
 ### `GET /api/stats`
 
@@ -259,11 +269,11 @@ Example response:
 
 ### `GET /api/scrape/status`
 
-Returns the current in-memory scrape state.
+Returns the current in-memory scraping status.
 
 ### `POST /api/scrape`
 
-Triggers a manual scrape.
+Triggers a manual scraping run.
 
 Example response:
 
@@ -282,71 +292,77 @@ Example response:
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 18 or later
 - npm
 - MongoDB Atlas cluster
 
-### 1. Clone the repository
+### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/CodeCrest404/Career-Crawler.git
-cd Career-Crawler
+git clone https://github.com/Sankar-1110/JobOrbit.git
+cd JobOrbit
 ```
 
-### 2. Backend setup
+### 2. Backend Setup
+
+Navigate to the backend directory:
 
 ```bash
 cd backend
 npm install
 ```
 
-Create `backend/.env`:
+Create a `backend/.env` file:
 
-```bash
+```env
 PORT=5000
-MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/careercrawler?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/j oborbit?retryWrites=true&w=majority
 SCRAPE_CRON=0 */6 * * *
 SCRAPE_CONCURRENCY=5
 SCRAPE_DELAY_MS=2000
 ENABLE_SCHEDULER=true
 ```
 
-Seed companies:
+**Important:** Replace the MongoDB connection string with your actual connection string. Use `joborbit` as the database name if desired, and ensure the URI contains no accidental spaces.
+
+Seed the company list:
 
 ```bash
 npm run seed:companies
 ```
 
-Start backend:
+Start the backend:
 
 ```bash
 npm run dev
 ```
 
-### 3. Frontend setup
+### 3. Frontend Setup
+
+Open a new terminal and navigate to the frontend directory:
 
 ```bash
-cd ../frontend
+cd frontend
 npm install
 ```
 
-Create `frontend/.env`:
+Create a `frontend/.env` file:
 
-```bash
+```env
 VITE_USE_MOCK_DATA=false
 VITE_API_BASE_URL=http://localhost:5000
 ```
 
-Start frontend:
+Start the frontend:
 
 ```bash
 npm run dev
 ```
 
-### 4. Open the app
+### 4. Open the Application
 
-- Frontend: `http://localhost:5173`
-- Backend: `http://localhost:5000`
+- **Frontend:** http://localhost:5173
+- **Backend:** http://localhost:5000
 
 ## Deployment Guide
 
@@ -355,105 +371,116 @@ npm run dev
 1. Create a MongoDB Atlas cluster.
 2. Create a database user.
 3. Allow network access for your Render service.
-4. Copy the Mongo connection string.
-5. Use a database name such as `careercrawler`.
+4. Copy the MongoDB connection string.
+5. Configure the database name as `joborbit` if you want to use the new name.
 
-Example:
+Example environment variable:
 
-```bash
-MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/careercrawler?retryWrites=true&w=majority
+```env
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster.mongodb.net/j oborbit?retryWrites=true&w=majority
 ```
+
+Replace the example with a valid connection string and remove any spaces from the database path.
+
+**Note:** Changing the database name in the connection string may cause the application to use a different database. Existing job and company records will not automatically move to it.
 
 ### Backend Deployment on Render
 
-Create a new `Web Service` from the GitHub repository.
+Create a new Web Service from the GitHub repository.
 
-Recommended settings:
+**Recommended settings:**
 
 - Root Directory: `backend`
 - Build Command: `npm install`
 - Start Command: `npm start`
 
-Environment variables:
+Configure the following environment variables:
 
-```bash
+```env
 PORT=10000
-MONGODB_URI=<your atlas uri>
+MONGODB_URI=<your_mongodb_atlas_uri>
 SCRAPE_CRON=0 */6 * * *
 SCRAPE_CONCURRENCY=5
 SCRAPE_DELAY_MS=2000
 ENABLE_SCHEDULER=true
 ```
 
-Notes:
+**Notes:**
 
-- Render automatically injects `PORT`; if you keep it in env, make sure your code still reads `process.env.PORT`.
-- Scheduled scrapes only work while the backend service is running.
-- If your plan sleeps when idle, the cron job may not run until traffic wakes the service up.
+- Render automatically provides the `PORT` environment variable. Your backend should read `process.env.PORT`.
+- Scheduled scraping only works while the backend service is running.
+- If your hosting plan sleeps while idle, scheduled jobs may not execute as expected.
 
-After deploy:
+After deployment, verify:
 
 - Health check: `https://career-crawler-1.onrender.com/api/health`
-- Stats: `https://career-crawler-1.onrender.com/api/stats`
+- Statistics: `https://career-crawler-1.onrender.com/api/stats`
 
 ### Frontend Deployment on Vercel
 
-Create a new Vercel project from the same repository.
+Create a Vercel project using the same GitHub repository.
 
-Recommended settings:
+**Recommended settings:**
 
 - Root Directory: `frontend`
 - Framework Preset: `Vite`
 - Build Command: `npm run build`
 - Output Directory: `dist`
 
-Environment variables:
+Configure these environment variables:
 
-```bash
+```env
 VITE_USE_MOCK_DATA=false
 VITE_API_BASE_URL=https://career-crawler-1.onrender.com
 ```
 
-After deploy:
+After deployment:
 
-- Frontend URL: `https://career-crawler-6tga.vercel.app/`
+- **Frontend:** https://career-crawler-6tga.vercel.app/
+
+You can optionally configure a custom domain containing `joborbit` later.
 
 ## Production Checklist
 
-- Rotate any database credentials that were ever exposed
-- Set `VITE_API_BASE_URL` to the Render backend URL
-- Confirm `MONGODB_URI` is set correctly on Render
-- Confirm CORS allows frontend access if you later restrict origins
-- Seed companies in production at least once
-- Verify:
-  - `/api/health`
-  - `/api/stats`
-  - `/api/jobs`
-  - `/api/scrape`
+Before considering the deployment complete, verify:
+
+- [ ] Rotate database credentials if they were ever exposed.
+- [ ] Set `VITE_API_BASE_URL` to the correct backend URL.
+- [ ] Confirm `MONGODB_URI` is configured correctly on Render.
+- [ ] Confirm CORS allows requests from the frontend.
+- [ ] Seed companies in production at least once.
+- [ ] Verify `/api/health`.
+- [ ] Verify `/api/stats`.
+- [ ] Verify `/api/jobs`.
+- [ ] Verify `/api/scrape`.
 
 ## Known Limitations
 
-- `lastScrapeCompletedAt` is currently in-memory and resets on backend restart
-- saved jobs are UI-only and not persisted
-- location normalization can still be improved for some Workday values
-- the custom dropdown UI still needs refinement
-- Google and Amazon custom scrapers are not implemented yet
+- `lastScrapeCompletedAt` is stored in memory and resets when the backend restarts.
+- Saved jobs are currently UI-only and are not persisted to the database.
+- Location normalization can be improved for some Workday values.
+- The custom dropdown UI needs further refinement.
+- Google and Amazon custom scrapers are not implemented yet.
 
 ## Future Improvements
 
-- Persist scrape run history
-- Add Google and Amazon scrapers
-- Add more India-heavy MNCs
-- Normalize locations and experience values further
-- Persist saved jobs per user
-- Add resume parsing and skill-gap analysis
+- Persist scraping history.
+- Add Google and Amazon scrapers.
+- Add more India-focused multinational companies.
+- Improve location and experience normalization.
+- Persist saved jobs for individual users.
+- Add resume parsing and skill-gap analysis.
 
-## Security Note
+## Security
 
-Do not commit real secrets to:
+Never commit real credentials or secrets to:
 
 - `backend/.env`
 - `frontend/.env`
 - `.env.example`
 
-If any MongoDB password or API key has already been exposed, rotate it immediately in the provider dashboard and update the deployment environment variables.
+If a MongoDB password or API key has been exposed, rotate it immediately in the provider dashboard and update the deployment environment variables.
+
+---
+
+**JobOrbit — Discover opportunities. Navigate your career.**
